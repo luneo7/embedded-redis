@@ -50,11 +50,8 @@ public class RedisSentinelTest {
         TimeUnit.SECONDS.sleep(1);
 
         //when
-        JedisSentinelPool pool = null;
-        Jedis jedis = null;
-        try {
-            pool = new JedisSentinelPool("mymaster", Sets.newHashSet("localhost:26379"));
-            jedis = pool.getResource();
+        try (JedisSentinelPool pool = new JedisSentinelPool("mymaster", Sets.newHashSet("localhost:26379"));
+             Jedis jedis = pool.getResource()) {
             jedis.mset("abc", "1", "def", "2");
 
             //then
@@ -62,8 +59,6 @@ public class RedisSentinelTest {
             assertEquals("2", jedis.mget("def").get(0));
             assertNull(jedis.mget("xyz").get(0));
         } finally {
-            if (jedis != null)
-                pool.returnResource(jedis);
             sentinel.stop();
             server.stop();
         }

@@ -5,8 +5,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import redis.embedded.exceptions.EmbeddedRedisException;
 
-import java.io.*;
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -14,7 +17,7 @@ import java.util.concurrent.Executors;
 
 abstract class AbstractRedisInstance implements Redis {
 
-    private static Log log = LogFactory.getLog(AbstractRedisInstance.class);
+    private static final Log log = LogFactory.getLog(AbstractRedisInstance.class);
 
     protected List<String> args = Collections.emptyList();
     private volatile boolean active = false;
@@ -61,13 +64,13 @@ abstract class AbstractRedisInstance implements Redis {
     private void awaitRedisServerReady() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(redisProcess.getInputStream()));
         try {
-            StringBuffer outputStringBuffer = new StringBuffer();
+            StringBuilder outputStringBuffer = new StringBuilder();
             String outputLine;
             do {
                 outputLine = reader.readLine();
                 if (outputLine == null) {
                     //Something goes wrong. Stream is ended before server was activated.
-                    throw new RuntimeException("Can't start redis server. Check logs for details. Redis process log: " + outputStringBuffer.toString());
+                    throw new RuntimeException("Can't start redis server. Check logs for details. Redis process log: " + outputStringBuffer);
                 } else {
                     outputStringBuffer.append("\n");
                     outputStringBuffer.append(outputLine);
@@ -110,7 +113,7 @@ abstract class AbstractRedisInstance implements Redis {
     }
 
     public List<Integer> ports() {
-        return Arrays.asList(port);
+        return Collections.singletonList(port);
     }
 
     private static class PrintReaderRunnable implements Runnable {

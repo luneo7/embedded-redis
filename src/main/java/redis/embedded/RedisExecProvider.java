@@ -24,14 +24,16 @@ public class RedisExecProvider {
     }
 
     private void initExecutables() {
-        executables.put(OsArchitecture.WINDOWS_x86, "redis-server-2.8.19.exe");
-        executables.put(OsArchitecture.WINDOWS_x86_64, "redis-server-2.8.19.exe");
+        executables.put(OsArchitecture.WINDOWS_x86, "redis-server-5.0.14.1.exe");
+        executables.put(OsArchitecture.WINDOWS_x86_64, "redis-server-5.0.14.1.exe");
 
-        executables.put(OsArchitecture.UNIX_x86, "redis-server-2.8.19-32");
-        executables.put(OsArchitecture.UNIX_x86_64, "redis-server-2.8.19");
+        executables.put(OsArchitecture.UNIX_x86, "redis-server-6.2.14-linux-32");
+        executables.put(OsArchitecture.UNIX_x86_64, "redis-server-6.2.14-linux");
+        executables.put(OsArchitecture.UNIX_AARCH64, "redis-server-6.2.14-linux-arm64");
 
-        executables.put(OsArchitecture.MAC_OS_X_x86, "redis-server-2.8.19.app");
-        executables.put(OsArchitecture.MAC_OS_X_x86_64, "redis-server-2.8.19.app");
+        executables.put(OsArchitecture.MAC_OS_X_x86, "redis-server-6.2.6-v9-darwin-amd64");
+        executables.put(OsArchitecture.MAC_OS_X_x86_64, "redis-server-6.2.6-v9-darwin-amd64");
+        executables.put(OsArchitecture.MAC_OS_X_ARM64, "redis-server-6.2.6-v9-darwin-arm64");
     }
 
     public RedisExecProvider override(OS os, String executable) {

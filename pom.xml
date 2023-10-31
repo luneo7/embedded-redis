@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>it.ozimov</groupId>
+    <groupId>io.github.luneo7</groupId>
     <artifactId>embedded-redis</artifactId>
     <packaging>jar</packaging>
-    <version>0.7.4-SNAPSHOT</version>
+    <version>0.8.1-SNAPSHOT</version>
     <name>embedded-redis</name>
     <description>Redis embedded server for Java integration testing.
         Project forked from https://github.com/kstyrc/embedded-redis</description>
-    <url>https://github.com/ozimov/embedded-redis</url>
+    <url>https://github.com/luneo7/embedded-redis</url>
 
     <licenses>
         <license>
@@ -19,16 +19,19 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/ozimov/embedded-redis</url>
-        <connection>scm:git:https://github.com/ozimov/embedded-redis.git</connection>
-        <developerConnection>scm:git:https://github.com/ozimov/embedded-redis.git</developerConnection>
-        <tag>embedded-redis-0.7.2</tag>
+        <connection>scm:git:git@github.com:luneo7/embedded-redis.git</connection>
+        <developerConnection>scm:git:git@github.com:luneo7/embedded-redis.git</developerConnection>
+        <url>https://github.com/luneo7/embedded-redis</url>
     </scm>
 
     <developers>
         <developer>
             <name>Krzysztof Styrc</name>
             <email>kstyrc@gmail.com</email>
+        </developer>
+        <developer>
+            <name>Lucas Ferreira</name>
+            <email>luneo7'at'gmail.com</email>
         </developer>
     </developers>
 
@@ -40,19 +43,19 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>21.0</version>
+            <version>32.1.3-jre</version>
         </dependency>
 
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.5</version>
+            <version>2.15.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.21</version>
+            <version>2.0.9</version>
         </dependency>
 
         <dependency>
@@ -71,15 +74,15 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.10.19</version>
+            <artifactId>mockito-core</artifactId>
+            <version>3.12.3</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -99,11 +102,11 @@
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
     <build>
@@ -250,8 +253,8 @@
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
                 </plugins>

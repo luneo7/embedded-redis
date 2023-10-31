@@ -20,16 +20,16 @@ public class RedisServerTest {
 
 	@Test(timeout = 1500L)
 	public void testSimpleRun() throws Exception {
-		redisServer = new RedisServer(6379);
+		redisServer = new RedisServer(6388);
 		redisServer.start();
-		Thread.sleep(1000L);
+		Thread.sleep(300L);
 		redisServer.stop();
 	}
 
 	@Test(expected = RuntimeException.class)
 	public void shouldNotAllowMultipleRunsWithoutStop() throws Exception {
 		try {
-			redisServer = new RedisServer(6379);
+			redisServer = new RedisServer(6388);
 			redisServer.start();
 			redisServer.start();
 		} finally {
@@ -39,7 +39,7 @@ public class RedisServerTest {
 
 	@Test
 	public void shouldAllowSubsequentRuns() throws Exception {
-		redisServer = new RedisServer(6379);
+		redisServer = new RedisServer(6388);
 		redisServer.start();
 		redisServer.stop();
 
@@ -52,35 +52,30 @@ public class RedisServerTest {
 
 	@Test
 	public void testSimpleOperationsAfterRun() throws Exception {
-		redisServer = new RedisServer(6379);
+		redisServer = new RedisServer(6388);
 		redisServer.start();
 
-		JedisPool pool = null;
-		Jedis jedis = null;
-		try {
-			pool = new JedisPool("localhost", 6379);
-			jedis = pool.getResource();
+		try (JedisPool pool = new JedisPool("localhost", 6388);
+             Jedis jedis = pool.getResource()) {
 			jedis.mset("abc", "1", "def", "2");
 
 			assertEquals("1", jedis.mget("abc").get(0));
 			assertEquals("2", jedis.mget("def").get(0));
 			assertNull(jedis.mget("xyz").get(0));
 		} finally {
-			if (jedis != null)
-				pool.returnResource(jedis);
 			redisServer.stop();
 		}
 	}
 
     @Test
     public void shouldIndicateInactiveBeforeStart() throws Exception {
-        redisServer = new RedisServer(6379);
+        redisServer = new RedisServer(6388);
         assertFalse(redisServer.isActive());
     }
 
     @Test
     public void shouldIndicateActiveAfterStart() throws Exception {
-        redisServer = new RedisServer(6379);
+        redisServer = new RedisServer(6388);
         redisServer.start();
         assertTrue(redisServer.isActive());
         redisServer.stop();
@@ -88,7 +83,7 @@ public class RedisServerTest {
 
     @Test
     public void shouldIndicateInactiveAfterStop() throws Exception {
-        redisServer = new RedisServer(6379);
+        redisServer = new RedisServer(6388);
         redisServer.start();
         redisServer.stop();
         assertFalse(redisServer.isActive());
@@ -97,11 +92,11 @@ public class RedisServerTest {
     @Test
     public void shouldOverrideDefaultExecutable() throws Exception {
         RedisExecProvider customProvider = RedisExecProvider.defaultProvider()
-                .override(OS.UNIX, Architecture.x86, Resources.getResource("redis-server-2.8.19-32").getFile())
-                .override(OS.UNIX, Architecture.x86_64, Resources.getResource("redis-server-2.8.19").getFile())
-                .override(OS.WINDOWS, Architecture.x86, Resources.getResource("redis-server-2.8.19.exe").getFile())
-                .override(OS.WINDOWS, Architecture.x86_64, Resources.getResource("redis-server-2.8.19.exe").getFile())
-                .override(OS.MAC_OS_X, Resources.getResource("redis-server-2.8.19").getFile());
+                .override(OS.UNIX, Architecture.x86, Resources.getResource("redis-server-6.2.14-linux-32").getFile())
+                .override(OS.UNIX, Architecture.x86_64, Resources.getResource("redis-server-6.2.14-linux").getFile())
+                .override(OS.WINDOWS, Architecture.x86, Resources.getResource("redis-server-5.0.14.1.exe").getFile())
+                .override(OS.WINDOWS, Architecture.x86_64, Resources.getResource("redis-server-5.0.14.1.exe").getFile())
+                .override(OS.MAC_OS_X, Resources.getResource("redis-server-6.2.6-v9-darwin-amd64").getFile());
 
         redisServer = new RedisServerBuilder()
                 .redisExecProvider(customProvider)
